@@ -27,13 +27,13 @@ all_vars <- names(weather)
 #========================================================
 
 ui <- fluidPage(
-  
+
   titlePanel("Visualisasi Data Interaktif Dataset Weather"),
-  
+
   sidebarLayout(
-    
+
     sidebarPanel(
-      
+
       selectInput(
         "plot_type",
         "Pilih Jenis Visualisasi:",
@@ -44,27 +44,27 @@ ui <- fluidPage(
           "Tabel Data"
         )
       ),
-      
+
       uiOutput("pilihan_variabel")
-      
+
     ),
-    
+
     mainPanel(
-      
+
       conditionalPanel(
         condition = "input.plot_type != 'Tabel Data'",
         plotlyOutput("plot", height = "550px")
       ),
-      
+
       conditionalPanel(
         condition = "input.plot_type == 'Tabel Data'",
         DTOutput("table")
       )
-      
+
     )
-    
+
   )
-  
+
 )
 
 #========================================================
@@ -72,21 +72,21 @@ ui <- fluidPage(
 #========================================================
 
 server <- function(input, output, session){
-  
+
   #------------------------------------------------------
   # INPUT VARIABEL
   #------------------------------------------------------
-  
+
   output$pilihan_variabel <- renderUI({
-    
+
     tagList(
-      
+
       selectInput(
         "xvar",
         "Pilih Variabel X:",
         choices = numerik_vars
       ),
-      
+
       selectInput(
         "yvar",
         "Pilih Variabel Y:",
@@ -96,22 +96,22 @@ server <- function(input, output, session){
         else
           numerik_vars[1]
       )
-      
+
     )
-    
+
   })
-  
+
   #------------------------------------------------------
   # PLOT
   #------------------------------------------------------
-  
+
   output$plot <- renderPlotly({
-    
+
     req(input$xvar, input$yvar)
-    
+
     # Scatter Plot
     if(input$plot_type == "Scatter Plot"){
-      
+
       p <- ggplot(
         weather,
         aes_string(
@@ -129,14 +129,14 @@ server <- function(input, output, session){
           x = input$xvar,
           y = input$yvar
         )
-      
+
       ggplotly(p)
-      
+
     }
-    
+
     # Line Plot
     else if(input$plot_type == "Line Plot"){
-      
+
       p <- ggplot(
         weather,
         aes_string(
@@ -154,14 +154,14 @@ server <- function(input, output, session){
           x = input$xvar,
           y = input$yvar
         )
-      
+
       ggplotly(p)
-      
+
     }
-    
+
     # Bar Plot
     else if(input$plot_type == "Bar Plot"){
-      
+
       p <- ggplot(
         weather,
         aes_string(
@@ -178,18 +178,18 @@ server <- function(input, output, session){
           x = input$xvar,
           y = input$yvar
         )
-      
+
       ggplotly(p)
-      
+
     }
-    
+
   })  
   #------------------------------------------------------
   # TABEL DATA
   #------------------------------------------------------
-  
+
   output$table <- renderDT({
-    
+
     datatable(
       weather,
       options = list(
@@ -197,10 +197,11 @@ server <- function(input, output, session){
         scrollX = TRUE
       )
     )
-    
+
   })
-  
+
 }   
+
 #========================================================
 # MENJALANKAN APLIKASI
 #========================================================
@@ -209,3 +210,5 @@ shinyApp(
   ui = ui,
   server = server
 )
+#========================================================
+
