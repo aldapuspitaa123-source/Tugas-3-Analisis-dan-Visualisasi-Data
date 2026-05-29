@@ -1,3 +1,12 @@
+#NAMA : ALDA PUSPITA
+#NIM  : 051105186
+#PRODI: SISTEM INFORMASI
+
+#Langkah 1 : Instal dan Load packages yang diperlukan
+install.packages("shiny")
+install.packages("ggplot2")
+install.packages("plotly")
+install.packages("DT")
 # Memanggil Library
 library(shiny)
 library(ggplot2)
@@ -7,6 +16,10 @@ library(DT)
 # MEMBACA DATA
 #========================================================
 weather <- read.csv("C:/Users/Alda Puspita/Downloads/weather.csv",sep = ";",stringsAsFactors = FALSE)
+#========================================================
+# VARIABEL NUMERIK
+#========================================================
+
 numerik_vars <- names(weather)[sapply(weather, is.numeric)]
 all_vars <- names(weather)
 #========================================================
